@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: reviewcheckbot
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: user
+    password: password
+
+bot:
+  token: ${BOT_TOKEN}
+
+review-check-service:
+  host: localhost
+  port: 5000
+
+s3:
+  endpoint: http://localhost:9000
+  region: us-east-1
+  accessKey: user
+  accessSecret: password
+  bucket: reviewsbucket
+
+kafka:
+  bootstrap-server: localhost:9092
+  acknowledgement: all
+  group-id: bot-service-group
+  topics:
+    received-file:
+      name: received-file
+      partitions: 1
+      replication-factor: 1
+    file-review:
+      name: file-review
+      partitions: 1
+      replication-factor: 1
