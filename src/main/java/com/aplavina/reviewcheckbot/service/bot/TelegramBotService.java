@@ -5,6 +5,7 @@ import com.aplavina.reviewcheckbot.producer.file.FileReceivedProducer;
 import com.aplavina.reviewcheckbot.service.review.CheckReviewService;
 import com.aplavina.reviewcheckbot.service.s3.S3Service;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 public class TelegramBotService extends TelegramLongPollingBot {
     private final CheckReviewService checkReviewService;
     private final RestTemplate restTemplate;
@@ -63,6 +65,16 @@ public class TelegramBotService extends TelegramLongPollingBot {
             fileReceivedProducer.publish(fileReceivedEvent);
             SendMessage sendMessage = new SendMessage(chatId, "File received. Will send you the report soon.");
             sendApiMethod(sendMessage);
+        }
+    }
+
+    public void sendMessage(String chatId, String text) {
+        SendMessage sendMessage = new SendMessage(chatId, text);
+        try {
+            sendApiMethod(sendMessage);
+        } catch (Exception e) {
+            log.error("Failed to send message", e);
+            throw new IllegalStateException("Failed to send message", e);
         }
     }
 

@@ -6,6 +6,15 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     username: user
     password: password
+  jpa:
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: true
+          region:
+            factory_class: org.redisson.hibernate.RedissonRegionFactory
+          use_query_cache: true
+    show-sql: true
 
 bot:
   token: ${BOT_TOKEN}
@@ -34,3 +43,12 @@ kafka:
       name: file-review
       partitions: 1
       replication-factor: 1
+
+multithreading:
+  scheduler:
+    pool-size: 4
+
+scheduler:
+  reports:
+    cron: "*/5 * * * * *"
+    zone: "UTC"

@@ -40,6 +40,7 @@ dependencies {
      * Database
      */
     implementation("org.liquibase:liquibase-core")
+    implementation("org.redisson:redisson-hibernate-53:3.23.5")
 //    implementation("redis.clients:jedis:4.3.2")
     runtimeOnly("org.postgresql:postgresql")
 

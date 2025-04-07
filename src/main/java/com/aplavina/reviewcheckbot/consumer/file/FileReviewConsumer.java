@@ -44,6 +44,7 @@ public class FileReviewConsumer {
                             .orElseThrow(() -> new IllegalStateException("File not found"))
                     )
                     .build());
+            ack.acknowledge();
         } catch (JsonProcessingException e) {
             log.error("Could not deserialize FileReceivedEvent from json", e);
             throw new IllegalStateException("Could not deserialize FileReceivedEvent from json");
