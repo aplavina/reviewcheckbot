@@ -32,9 +32,12 @@ public class FileCheckReportScheduler {
                     .mapToDouble(ReviewCheck::getFakeScorePercentage)
                     .average()
                     .orElse(0.0);
-            double percentFake = reviewChecks.stream()
-                    .filter(reviewCheck -> reviewCheck.getFakeScorePercentage() > 0)
-                    .count() * 100.0 / reviewChecks.size();
+            double percentFake = 0;
+            if (!reviewChecks.isEmpty()) {
+                percentFake = reviewChecks.stream()
+                        .filter(reviewCheck -> reviewCheck.getFakeScorePercentage() > 0)
+                        .count() * 100.0 / reviewChecks.size();
+            }
             String report = String.format("Fake score: %.2f%%\n" +
                             "Percent of fake reviews: %.2f%%",
                     avgFakeScore, percentFake);

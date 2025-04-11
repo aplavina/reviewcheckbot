@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
@@ -98,3 +99,5 @@ public class TelegramBotService extends TelegramLongPollingBot {
         return restTemplate.execute(fileUrl, HttpMethod.GET, requestCallback, responseExtractor);
     }
 }
+
+

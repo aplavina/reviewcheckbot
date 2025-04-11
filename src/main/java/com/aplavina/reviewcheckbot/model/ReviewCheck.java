@@ -1,10 +1,7 @@
 package com.aplavina.reviewcheckbot.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @NoArgsConstructor
@@ -12,6 +9,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Getter
 @Builder
 @Cacheable
+@Setter
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 @Table(name = "review_check")

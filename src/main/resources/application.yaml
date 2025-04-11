@@ -7,14 +7,16 @@ spring:
     username: user
     password: password
   jpa:
-    properties:
-      hibernate:
-        cache:
-          use_second_level_cache: true
-          region:
-            factory_class: org.redisson.hibernate.RedissonRegionFactory
-          use_query_cache: true
     show-sql: true
+    properties:
+      cache:
+        use_second_level_cache: true
+        use_query_cache: true
+        region:
+          factory_class: org.redisson.hibernate.RedissonRegionFactory
+        redisson:
+          config: "classpath:redisson.yaml"
+
 
 bot:
   token: ${BOT_TOKEN}
@@ -52,3 +54,6 @@ scheduler:
   reports:
     cron: "*/5 * * * * *"
     zone: "UTC"
+
+redis:
+  address: "redis://localhost:6379"

@@ -32,7 +32,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.0.2")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     implementation("org.springframework.retry:spring-retry:2.0.10")
 
@@ -40,22 +39,13 @@ dependencies {
      * Database
      */
     implementation("org.liquibase:liquibase-core")
-    implementation("org.redisson:redisson-hibernate-53:3.23.5")
-//    implementation("redis.clients:jedis:4.3.2")
     runtimeOnly("org.postgresql:postgresql")
+    implementation("org.redisson:redisson-hibernate-6:3.23.1")
 
     /**
      * S3
      */
     implementation("com.amazonaws:aws-java-sdk-s3:1.12.481")
-
-    /**
-     * Google Calendar
-     */
-    implementation("com.google.api-client:google-api-client:2.0.0")
-    implementation("com.google.oauth-client:google-oauth-client-jetty:1.34.1")
-    implementation("com.google.apis:google-api-services-calendar:v3-rev20220715-2.0.0")
-    implementation("com.google.auth:google-auth-library-oauth2-http:1.17.0")
 
     /**
      * Utils & Logging
@@ -65,8 +55,6 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.6")
     implementation("org.projectlombok:lombok:1.18.26")
     annotationProcessor("org.projectlombok:lombok:1.18.26")
-    implementation("org.mapstruct:mapstruct:1.5.3.Final")
-    annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0")
 
     /**
