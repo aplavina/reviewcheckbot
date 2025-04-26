@@ -1,0 +1,35 @@
+@startuml
+actor User
+participant "Telegram Bot" as Bot
+participant "Model API Service" as Model
+participant "S3 Storage" as S3
+participant "Kafka" as Kafka
+participant "FileCheck Consumer" as FileConsumer
+participant "DB" as Database
+participant "Scheduler" as Scheduler
+
+== Проверка файла с отзывами ==
+User -> Bot : Отправка файла с отзывами
+Bot -> S3 : Сохранение файла
+Bot -> Kafka : publish(FileReceived)
+
+Kafka -> FileConsumer : consume(FileReceived)
+FileConsumer -> Database : insert(ReviewCheckRecord)
+FileConsumer -> S3 : Загрузка файла
+loop по каждой строке
+    FileConsumer -> Kafka : publish(SingleReviewCheck)
+end
+FileConsumer -> Database : update(count_of_reviews)
+
+== Проверка каждого отзыва ==
+Kafka -> FileConsumer : consume(SingleReviewCheck)
+FileConsumer -> Model : POST /check-review
+Model -> FileConsumer : Результат проверки
+FileConsumer -> Database : insert(ReviewResult)
+
+== Завершение проверки и отправка отчета ==
+Scheduler -> Database : get(finished_review_checks)
+loop по завершенным файлам
+    Scheduler -> Bot : Отправка отчета
+end
+@enduml

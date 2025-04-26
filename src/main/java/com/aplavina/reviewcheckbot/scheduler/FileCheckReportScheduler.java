@@ -35,7 +35,7 @@ public class FileCheckReportScheduler {
             double percentFake = 0;
             if (!reviewChecks.isEmpty()) {
                 percentFake = reviewChecks.stream()
-                        .filter(reviewCheck -> reviewCheck.getFakeScorePercentage() > 0)
+                        .filter(ReviewCheck::getIsFake)
                         .count() * 100.0 / reviewChecks.size();
             }
             String report = String.format("Fake score: %.2f%%\n" +

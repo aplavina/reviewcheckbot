@@ -52,7 +52,7 @@ multithreading:
 
 scheduler:
   reports:
-    cron: "*/5 * * * * *"
+    cron: "* */5 * * * *"
     zone: "UTC"
 
 redis:

@@ -1,0 +1,11 @@
+@startuml
+actor User
+participant "Telegram Bot" as Bot
+participant "Model API Service" as Model
+
+User -> Bot : Отправка текста отзыва
+Bot -> Model : POST /check-review
+Model -> Bot : { is_fake: true, fake_score_percentage: 0.87 }
+Bot -> User : Ответ о подлинности отзыва
+
+@enduml

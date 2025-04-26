@@ -1,0 +1,19 @@
+@startuml
+entity file_check {
+    * file_key : VARCHAR [PK]
+    --
+    chat_id : VARCHAR
+    count : BIGINT
+}
+
+entity review_check {
+    * id : VARCHAR [PK]
+    --
+    text : VARCHAR
+    is_fake : BOOLEAN
+    fake_score_percentage : FLOAT
+    file_id : VARCHAR [FK]
+}
+
+file_check ||--o{ review_check
+@enduml

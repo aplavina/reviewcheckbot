@@ -15,3 +15,4 @@ create TABLE review_check (
 );
 
 alter table review_check add CONSTRAINT FK_REVIEW_CHECK_ON_FILE FOREIGN KEY (file_id) REFERENCES file_check (file_key);
+
