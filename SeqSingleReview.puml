@@ -4,8 +4,12 @@ participant "Telegram Bot" as Bot
 participant "Model API Service" as Model
 
 User -> Bot : Отправка текста отзыва
+activate Bot
 Bot -> Model : POST /check-review
+activate Model
 Model -> Bot : { is_fake: true, fake_score_percentage: 0.87 }
+deactivate Model
 Bot -> User : Ответ о подлинности отзыва
+deactivate Bot
 
 @enduml

@@ -52,8 +52,10 @@ multithreading:
 
 scheduler:
   reports:
-    cron: "* */5 * * * *"
+    cron: "*/5 * * * * *"
     zone: "UTC"
+
+min-review-text-length: 15
 
 redis:
   address: "redis://localhost:6379"

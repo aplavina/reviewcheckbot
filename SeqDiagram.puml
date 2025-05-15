@@ -1,35 +1,59 @@
 @startuml
 actor User
-participant "Telegram Bot" as Bot
-participant "Model API Service" as Model
+participant "TG Bot" as Bot
 participant "S3 Storage" as S3
 participant "Kafka" as Kafka
-participant "FileCheck Consumer" as FileConsumer
-participant "DB" as Database
-participant "Scheduler" as Scheduler
+participant "Database" as DB
+participant "ML Service" as ML
 
-== Проверка файла с отзывами ==
-User -> Bot : Отправка файла с отзывами
+
+User -> Bot : Отправка файла
+activate Bot
 Bot -> S3 : Сохранение файла
-Bot -> Kafka : publish(FileReceived)
+activate S3
+S3 -> Bot : OK
+deactivate S3
+Bot -> Kafka : Сообщение: "Обработка файла"
+activate Kafka
+Bot -> User : Подтверждение получения файла
+deactivate Bot
 
-Kafka -> FileConsumer : consume(FileReceived)
-FileConsumer -> Database : insert(ReviewCheckRecord)
-FileConsumer -> S3 : Загрузка файла
-loop по каждой строке
-    FileConsumer -> Kafka : publish(SingleReviewCheck)
+
+Kafka -> Bot : Получение сообщения (обработка файла)
+deactivate Kafka
+activate Bot
+Bot -> DB : Создание записи проверки файла
+activate DB
+DB -> Bot : OK
+deactivate DB
+loop По строкам файла
+    Bot -> Kafka : Сообщение о проверке отдельного отзыва
+    activate Kafka
 end
-FileConsumer -> Database : update(count_of_reviews)
+deactivate Bot
 
-== Проверка каждого отзыва ==
-Kafka -> FileConsumer : consume(SingleReviewCheck)
-FileConsumer -> Model : POST /check-review
-Model -> FileConsumer : Результат проверки
-FileConsumer -> Database : insert(ReviewResult)
 
-== Завершение проверки и отправка отчета ==
-Scheduler -> Database : get(finished_review_checks)
-loop по завершенным файлам
-    Scheduler -> Bot : Отправка отчета
-end
+Kafka -> Bot : Получение о проверке отдельного отзыва
+deactivate Kafka
+activate Bot
+Bot -> ML : HTTP запрос на проверку строки
+activate ML
+ML -> Bot : Результат проверки
+deactivate ML
+Bot -> DB : Сохранение результата
+activate DB
+DB -> Bot : OK
+deactivate DB
+deactivate Bot
+
+
+Bot -> Bot : Планировщик активен (cron)
+activate Bot
+Bot -> DB : Поиск завершённых файлов
+activate DB
+DB -> Bot : Список завершённых файлов
+deactivate DB
+Bot -> User : Отправка отчёта о проверке
+deactivate Bot
+
 @enduml
